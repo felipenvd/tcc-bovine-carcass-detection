@@ -54,7 +54,7 @@ export const About: React.FC = () => {
                             <div className="p-5 bg-green-50/50 rounded-2xl border border-green-100 flex items-start gap-3 mt-4">
                                 <Brain className="w-6 h-6 text-green-700 shrink-0 mt-1" />
                                 <p className="text-sm text-green-800">
-                                    Implementamos a arquitetura <strong>YOLOv4</strong> (You Only Look Once) para detecção em tempo real de não conformidades como <span className="font-semibold text-red-600">lesões</span> e <span className="font-semibold text-amber-600">perdas</span> de tecido.
+                                    Implementamos a arquitetura <strong>YOLO</strong> (You Only Look Once) para detecção em tempo real de não conformidades como <span className="font-semibold text-red-600">lesões</span> e <span className="font-semibold text-amber-600">perdas</span> de tecido.
                                 </p>
                             </div>
                         </div>
@@ -143,7 +143,7 @@ export const About: React.FC = () => {
                             </div>
 
                             <p className="text-[10px] text-green-200/30 pt-4">
-                                Universidade • 2024
+                                UFRA • 2026
                             </p>
                         </div>
                     </div>

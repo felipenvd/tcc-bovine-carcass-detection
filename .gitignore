@@ -1,1 +1,37 @@
-deteccao-carcacas-bovinas
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+.venv
+venv/
+env/
+
+# Node.js / Frontend
+node_modules/
+dist/
+build/
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+
+# Large Files & Archives
+*.zip
+*.tar
+*.gz
+*.rar
+
+# Model Weights
+*.weights
+*.pt
+*.onnx
+# Exception: Allow the deployed model in backend if it's small enough (<100MB)
+!backend/app/models/best.pt
+
+# Project Specific - Data & Training
+modelo-tcc/dataset/
+modelo-tcc/runs/
+deteccao-carcacas-bovinas/

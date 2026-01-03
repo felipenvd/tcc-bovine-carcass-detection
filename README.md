@@ -13,14 +13,14 @@
   <img src="https://img.shields.io/badge/FastAPI-0.115+-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/React-19-61dafb?style=for-the-badge&logo=react&logoColor=black" alt="React">
   <img src="https://img.shields.io/badge/TypeScript-5.9-3178c6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
-  <img src="https://img.shields.io/badge/YOLOv4-Darknet-00599c?style=for-the-badge" alt="YOLOv4">
+  <img src="https://img.shields.io/badge/YOLOv11-Ultralytics-00599c?style=for-the-badge" alt="YOLOv11">
 </p>
 
 ---
 
 ## 📖 Visão Geral
 
-Este projeto apresenta um **protótipo computacional** para apoio à **inspeção visual de carcaças bovinas** em ambientes industriais (frigoríficos). Utilizando técnicas de **Deep Learning** com a arquitetura **YOLOv4**, o sistema é capaz de detectar automaticamente:
+Este projeto apresenta um **protótipo computacional** para apoio à **inspeção visual de carcaças bovinas** em ambientes industriais (frigoríficos). Utilizando técnicas de **Deep Learning** com a arquitetura **YOLOv11**, o sistema é capaz de detectar automaticamente:
 
 | Classe | Descrição |
 |--------|-----------|
@@ -34,9 +34,9 @@ Este projeto apresenta um **protótipo computacional** para apoio à **inspeçã
 ## 🎯 Funcionalidades
 
 - ✅ **Upload de Imagens**: Interface drag-and-drop intuitiva
-- ✅ **Inferência em Tempo Real**: Processamento via modelo YOLOv4 treinado
+- ✅ **Inferência em Tempo Real**: Processamento via modelo YOLOv11 treinado
 - ✅ **Visualização de Resultados**: Exibição clara das classes detectadas e níveis de confiança
-- ✅ **Classificação Automática**: Status da carcaça (Normal, Atenção, Crítico)
+- ✅ **Classificação Automática**: Identificação precisa de lesões e perdas
 - ✅ **API RESTful**: Documentação automática via OpenAPI/Swagger
 
 ---
@@ -56,7 +56,7 @@ O sistema segue uma arquitetura **cliente-servidor** com separação clara de re
                                                         ▼
                                                ┌─────────────────┐
                                                │   YOLO MODEL    │
-                                               │  (OpenCV DNN)   │
+                                               │  (Ultralytics)  │
                                                └─────────────────┘
 ```
 
@@ -73,15 +73,15 @@ O sistema segue uma arquitetura **cliente-servidor** com separação clara de re
 |------------|--------|-----------|
 | Python | 3.10+ | Linguagem base para ML/IA |
 | FastAPI | 0.115+ | Framework web assíncrono de alta performance |
-| OpenCV | 4.x | Processamento de imagem e execução do modelo DNN |
+| Ultralytics | 8.x+ | Framework para execução do modelo YOLOv11 |
 | uv | Latest | Gerenciador de pacotes Python ultrarrápido |
 
 ### Modelo de IA
 | Componente | Arquivo | Descrição |
 |------------|---------|-----------|
-| Arquitetura | `deteccao-carcacas-bovinas.cfg` | Configuração YOLOv4 customizada |
-| Pesos | `backup/*_best.weights` | Pesos treinados no dataset balanceado |
-| Classes | `deteccao-carcacas-bovinas.names` | Definição das classes (Lesao, Perda) |
+| Arquitetura | `YOLOv11 Nano` | Modelo state-of-the-art para detecção de objetos |
+| Pesos | `backend/app/models/best.pt` | Pesos treinados no dataset customizado |
+| Classes | 2 (Lesão, Perda) | Classes alvo da detecção |
 
 ---
 
@@ -97,15 +97,10 @@ O sistema segue uma arquitetura **cliente-servidor** com separação clara de re
 - **Documentação Automática**: Swagger UI integrado em `/docs`
 - **Async Nativo**: Ideal para operações de I/O como upload de imagens
 
-### Por que uv ao invés de pip/poetry?
-- **Velocidade**: 10-100x mais rápido que pip
-- **Reprodutibilidade**: Lock file determinístico via `pyproject.toml`
-- **Simplicidade**: Substitui pip, poetry e virtualenv em uma única ferramenta
-
-### Por que OpenCV DNN ao invés de Darknet nativo?
-- **Portabilidade**: Não requer compilação da biblioteca Darknet
-- **Facilidade de Deploy**: Funciona em qualquer ambiente com Python
-- **Manutenção**: Menos dependências externas
+### Por que YOLOv11 (Ultralytics)?
+- **Acurácia Superior**: Melhor desempenho em relação às versões anteriores (v4, v5, v8).
+- **Facilidade de Uso**: API Python intuitiva e robusta.
+- **Modernidade**: State-of-the-art em detecção em tempo real.
 
 ---
 
@@ -156,11 +151,14 @@ tcc-deteccao-carcacas/
 │
 ├── 📁 backend/                          # API FastAPI
 │   ├── 📁 app/
+│   │   ├── 📁 models/                   # Arquivos do modelo
+│   │   │   └── 📄 best.pt               # Pesos YOLOv11 treinados
 │   │   ├── 📄 main.py                   # Entrypoint, rotas e CORS
-│   │   └── 📄 yolo_service.py           # Serviço de inferência YOLO
+│   │   └── 📄 yolo_service.py           # Serviço de inferência Ultralytics
 │   └── 📄 pyproject.toml                # Dependências Python (uv)
 │
 ├── 📁 frontend/                         # Aplicação React
+│   ├── 📁 public/                       # Assets estáticos (Images, Logo)
 │   ├── 📁 src/
 │   │   ├── 📁 components/
 │   │   │   ├── 📄 Header.tsx            # Cabeçalho do sistema
@@ -168,15 +166,12 @@ tcc-deteccao-carcacas/
 │   │   │   └── 📄 AnalysisResult.tsx    # Exibição de resultados
 │   │   ├── 📄 App.tsx                   # Componente principal
 │   │   └── 📄 index.css                 # Estilos Tailwind
-│   ├── 📄 tailwind.config.js
 │   └── 📄 package.json
 │
-├── 📁 deteccao-carcacas-bovinas/        # Dataset e Modelo
-│   ├── 📁 train/                        # Imagens de treino
-│   ├── 📁 valid/                        # Imagens de validação
-│   ├── 📁 backup/                       # Checkpoints de pesos (.weights)
-│   ├── 📄 *.cfg                         # Configuração YOLOv4
-│   └── 📄 *.names                       # Classes do modelo
+├── 📁 modelo-tcc/                       # Projeto de Treinamento e Dataset
+│   ├── 📁 dataset/                      # Imagens e anotações
+│   ├── 📁 runs/                         # Logs de treinamento e pesos
+│   └── 📄 README.md                     # Detalhes do treinamento
 │
 ├── 📁 docs/                             # Documentação adicional
 │
@@ -187,24 +182,19 @@ tcc-deteccao-carcacas/
 
 ## 📊 Dataset e Treinamento
 
-O modelo foi treinado com um dataset próprio de imagens de carcaças bovinas, aplicando técnicas de **balanceamento por oversampling** para lidar com o desbalanceamento de classes:
+O modelo foi treinado utilizando a arquitetura **YOLOv11**, focando em duas classes principais: **Lesão** e **Perda**.
 
-| Métrica | Valor |
-|---------|-------|
-| Total de Imagens | 810 |
-| Anotações "Lesão" | 486 (minoritária) |
-| Anotações "Perda" | 3014 (majoritária) |
-| Estratégia | Oversampling 8x/3x |
+Para detalhes aprofundados sobre a metodologia de treinamento, distribuição do dataset, pré-processamento (data augmentation) e resultados, consulte a documentação específica em:
 
-> Para detalhes sobre o processo de treinamento, consulte o [README do dataset](./deteccao-carcacas-bovinas/README.md).
+👉 [**Documentação do Modelo e Treinamento**](./modelo-tcc/README.md)
 
 ---
 
 ## 📚 Referências
 
-- **YOLOv4**: Bochkovskiy, A., Wang, C. Y., & Liao, H. Y. M. (2020). *YOLOv4: Optimal Speed and Accuracy of Object Detection*. arXiv preprint arXiv:2004.10934.
+- **Ultralytics YOLO**: Jocher, G., Chaurasia, A., & Qiu, J. (2023). *Ultralytics YOLO*. https://github.com/ultralytics/ultralytics
 - **FastAPI**: Ramírez, S. (2018). *FastAPI Documentation*. https://fastapi.tiangolo.com/
-- **OpenCV DNN**: OpenCV Team. *Deep Neural Networks module*. https://docs.opencv.org/4.x/d2/d58/tutorial_table_of_content_dnn.html
+- **React**: Facebook. *React Documentation*. https://react.dev/
 
 ---
 
