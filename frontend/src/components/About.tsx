@@ -6,7 +6,10 @@ import {
     Brain,
     Sparkles,
     Linkedin,
-    Github
+    Github,
+    Upload,
+    Zap,
+    CheckCircle
 } from 'lucide-react';
 import fotoFelipe from '../assets/foto-felipe.jpeg';
 import fotoJose from '../assets/foto-jose.jpeg';
@@ -56,6 +59,38 @@ export const About: React.FC = () => {
                                 <p className="text-sm text-green-800">
                                     Implementamos a arquitetura <strong>YOLO</strong> (You Only Look Once) para detecção em tempo real de não conformidades como <span className="font-semibold text-red-600">lesões</span> e <span className="font-semibold text-amber-600">perdas</span> de tecido.
                                 </p>
+                            </div>
+                        </div>
+
+                        <div className="mt-4 pt-4 border-t border-green-100/50">
+                            <h4 className="flex items-center text-lg font-bold text-[#1a472a] mb-6">
+                                <Sparkles className="w-5 h-5 mr-2 text-green-600" />
+                                Como Usar
+                            </h4>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="bg-white/50 p-4 rounded-xl border border-green-100 shadow-sm hover:shadow-md transition-all">
+                                    <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mb-3 text-green-700">
+                                        <Upload className="w-5 h-5" />
+                                    </div>
+                                    <h5 className="font-semibold text-green-800 mb-1">1. Upload</h5>
+                                    <p className="text-sm text-gray-500">Envie a imagem da carcaça para análise.</p>
+                                </div>
+
+                                <div className="bg-white/50 p-4 rounded-xl border border-green-100 shadow-sm hover:shadow-md transition-all">
+                                    <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mb-3 text-green-700">
+                                        <Zap className="w-5 h-5" />
+                                    </div>
+                                    <h5 className="font-semibold text-green-800 mb-1">2. Análise</h5>
+                                    <p className="text-sm text-gray-500">A IA processa a imagem em tempo real.</p>
+                                </div>
+
+                                <div className="bg-white/50 p-4 rounded-xl border border-green-100 shadow-sm hover:shadow-md transition-all">
+                                    <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mb-3 text-green-700">
+                                        <CheckCircle className="w-5 h-5" />
+                                    </div>
+                                    <h5 className="font-semibold text-green-800 mb-1">3. Resultado</h5>
+                                    <p className="text-sm text-gray-500">Visualize as lesões e perdas detectadas.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
