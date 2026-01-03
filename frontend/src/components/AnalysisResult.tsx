@@ -1,6 +1,9 @@
 
 import React from 'react';
-import { Camera, Search, CheckCircle2, AlertTriangle, AlertOctagon, History } from 'lucide-react';
+import { Camera, Search, CheckCircle2, AlertTriangle, AlertOctagon, History, Download, ZoomIn } from 'lucide-react';
+import Zoom from 'react-medium-image-zoom';
+import 'react-medium-image-zoom/dist/styles.css';
+import { saveAs } from 'file-saver';
 
 interface Detection {
     class: string;
@@ -53,13 +56,34 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({
             {/* Left Column: Visuals */}
             <div className="space-y-6">
                 <div className="glass-panel rounded-3xl overflow-hidden p-2 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <div className="relative rounded-2xl overflow-hidden bg-gray-100 min-h-[300px] flex items-center justify-center">
+                    <div className="relative rounded-2xl overflow-hidden bg-gray-100 min-h-[300px] flex items-center justify-center group/image">
                         {annotatedImage ? (
-                            <img
-                                src={annotatedImage}
-                                alt="Resultado da Análise"
-                                className="w-full h-auto object-contain"
-                            />
+                            <>
+                                <Zoom>
+                                    <img
+                                        src={annotatedImage}
+                                        alt="Resultado da Análise"
+                                        className="w-full h-auto object-contain cursor-zoom-in"
+                                    />
+                                </Zoom>
+
+                                {/* Overlay Actions */}
+                                <div className="absolute top-4 right-4 flex space-x-2 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300">
+                                    <button
+                                        onClick={() => saveAs(annotatedImage, `analysis_${filename}`)}
+                                        className="bg-white/90 backdrop-blur-md p-2 rounded-full shadow-sm hover:bg-white text-gray-700 hover:text-blue-600 transition-colors"
+                                        title="Baixar Imagem"
+                                    >
+                                        <Download className="w-5 h-5" />
+                                    </button>
+                                </div>
+
+                                {/* Zoom Hint */}
+                                <div className="absolute bottom-4 right-4 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-medium text-white flex items-center opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                    <ZoomIn className="w-3 h-3 mr-1.5" />
+                                    Clique para ampliar
+                                </div>
+                            </>
                         ) : (
                             <div className="text-gray-400 flex flex-col items-center">
                                 <Camera className="w-12 h-12 opacity-20 mb-2" />
@@ -128,8 +152,8 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({
                                 >
                                     <div className="flex justify-between items-center mb-3">
                                         <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wide ${d.class === 'Lesao'
-                                                ? 'bg-red-100 text-red-700'
-                                                : 'bg-amber-100 text-amber-700'
+                                            ? 'bg-red-100 text-red-700'
+                                            : 'bg-amber-100 text-amber-700'
                                             }`}>
                                             {d.class}
                                         </span>
@@ -142,8 +166,8 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({
                                     <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
                                         <div
                                             className={`h-full rounded-full transition-all duration-1000 ease-out ${d.class === 'Lesao'
-                                                    ? 'bg-gradient-to-r from-red-400 to-red-500'
-                                                    : 'bg-gradient-to-r from-amber-400 to-amber-500'
+                                                ? 'bg-gradient-to-r from-red-400 to-red-500'
+                                                : 'bg-gradient-to-r from-amber-400 to-amber-500'
                                                 }`}
                                             style={{ width: `${d.confidence * 100}%` }}
                                         ></div>
