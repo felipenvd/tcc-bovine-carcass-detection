@@ -104,9 +104,21 @@ O sistema segue uma arquitetura **cliente-servidor** com separação clara de re
 
 ---
 
-## 🚀 Como Executar
+### Opção 1: Docker (Recomendado) 🐳
+O jeito mais fácil e rápido de rodar o projeto.
 
-### Pré-requisitos
+```bash
+# Iniciar frontend e backend
+docker compose up --build
+
+# Backend: http://localhost:8000/docs
+# Frontend: http://localhost
+```
+
+### Opção 2: Instalação Manual
+Caso prefira rodar localmente sem Docker.
+
+#### Pré-requisitos
 ```bash
 # Node.js (v18+)
 node --version
@@ -155,6 +167,7 @@ tcc-deteccao-carcacas/
 │   │   │   └── 📄 best.pt               # Pesos YOLOv11 treinados
 │   │   ├── 📄 main.py                   # Entrypoint, rotas e CORS
 │   │   └── 📄 yolo_service.py           # Serviço de inferência Ultralytics
+│   ├── 📄 Dockerfile                    # Configuração Docker Backend
 │   └── 📄 pyproject.toml                # Dependências Python (uv)
 │
 ├── 📁 frontend/                         # Aplicação React
@@ -166,7 +179,10 @@ tcc-deteccao-carcacas/
 │   │   │   └── 📄 AnalysisResult.tsx    # Exibição de resultados
 │   │   ├── 📄 App.tsx                   # Componente principal
 │   │   └── 📄 index.css                 # Estilos Tailwind
+│   ├── 📄 Dockerfile                    # Configuração Docker Frontend
 │   └── 📄 package.json
+│
+├── 📄 compose.yaml                      # Orquestração Docker (V2)
 │
 ├── 📁 modelo-tcc/                       # Projeto de Treinamento e Dataset
 │   ├── 📁 dataset/                      # Imagens e anotações
