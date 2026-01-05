@@ -122,7 +122,7 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({
                             </div>
                             <div>
                                 <h2 className="text-3xl font-extrabold tracking-tight">{summary}</h2>
-                                <p className="mt-2 text-sm opacity-80 font-medium">Baseado na análise YOLOv4</p>
+
                             </div>
                         </div>
                     </div>

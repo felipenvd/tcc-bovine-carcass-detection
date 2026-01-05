@@ -21,4 +21,5 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 80
 
 # Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start Nginx with a welcome message
+CMD ["/bin/sh", "-c", "echo '✅ Frontend running on http://localhost' && nginx -g 'daemon off;'"]

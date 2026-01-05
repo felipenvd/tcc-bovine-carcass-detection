@@ -115,6 +115,22 @@ docker compose up --build
 # Frontend: http://localhost
 ```
 
+
+### 🐳 Comandos Docker Úteis
+
+Aqui estão alguns comandos essenciais para gerenciar o projeto com Docker:
+
+| Ação | Comando |
+|------|---------|
+| **Iniciar projeto** | `docker compose up --build` |
+| **Parar projeto** | `docker compose down` |
+| **Ver logs em tempo real** | `docker compose logs -f` |
+| **Reconstruir apenas o Frontend** | `docker compose up -d --build frontend` |
+| **Reconstruir apenas o Backend** | `docker compose up -d --build backend` |
+| **Ver containers ativos** | `docker compose ps` |
+
+> **Dica:** O backend pode demorar alguns minutos na primeira execução para instalar as dependências. Fique de olho nos logs!
+
 ### Opção 2: Instalação Manual
 Caso prefira rodar localmente sem Docker.
 
@@ -215,6 +231,8 @@ Para detalhes aprofundados sobre a metodologia de treinamento, distribuição do
 ---
 
 ## 👨‍💻 Autor
+
+Felipe Vidal e José Pires
 
 Desenvolvido como Trabalho de Conclusão de Curso em **Sistemas de Informação**.
 

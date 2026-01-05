@@ -3,7 +3,7 @@ import os
 
 def train_model():
     # Load a model
-    model = YOLO("yolo11n.pt")  # load a pretrained model (recommended for training)
+    model = YOLO("yolo11m.pt")  # load a pretrained model (recommended for training)
 
     # Train the model
     # data: path to data.yaml
@@ -13,9 +13,9 @@ def train_model():
     results = model.train(
         data="com-4-classes/dataset-2-classes/data.yaml",
         epochs=100,
-        imgsz=896,
+        imgsz=1280,
         batch=16,
-        name="yolo11n_2classes_augmented_896_conservative",
+        name="yolo11m_1280_medium",
         project="runs/detect",
         exist_ok=True,
         device=0,

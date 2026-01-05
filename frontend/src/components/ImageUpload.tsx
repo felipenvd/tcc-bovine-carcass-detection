@@ -1,6 +1,6 @@
 
-import React, { useState, ChangeEvent, DragEvent } from 'react';
-import { ImagePlus, Loader2, UploadCloud, FileImage } from 'lucide-react';
+import React, { useState, type ChangeEvent, type DragEvent } from 'react';
+import { Loader2, UploadCloud, FileImage } from 'lucide-react';
 
 interface ImageUploadProps {
     onImageSelected: (file: File) => void;
