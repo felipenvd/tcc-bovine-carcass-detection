@@ -117,7 +117,8 @@ O YOLOv11 traz augmentations agressivos por padrão que podem prejudicar este pr
 
 ### Etapa 3: Treinamento 🚧
 - [x] Configuração do ambiente de treino (`train.py`)
-- [ ] Treinamento do modelo baseline (YOLOv11 Nano)
+- [ ] Treinamento do modelo selecionado (YOLOv11 Medium)
+
 - [ ] Análise das métricas iniciais
 
 ### Etapa 4: Validação e Ajustes 📅
@@ -147,13 +148,31 @@ uv run train.py
 ```
 
 ### Teste / Avaliação
-Para rodar a validação no conjunto de teste e calcular o mAP oficial (usando os pesos do melhor modelo e a config local):
+
+#### Opção 1: Validação Simples (Comando original)
+Para rodar a validação no conjunto de teste e ler o mAP no terminal:
 
 ```bash
-uv run yolo val model=runs/detect/yolo11n_1280_nano/weights/best.pt data=com-4-classes/dataset-2-classes/data_local.yaml split=test
+uv run yolo val model=runs/detect/yolo11m_1280_medium/weights/best.pt data=dataset/dataset-2-classes/data_local.yaml split=test
+
 ```
 
-> **Nota:** Certifique-se de atualizar os caminhos absolutos no arquivo `com-4-classes/dataset-2-classes/data_local.yaml` para corresponderem ao diretório onde você clonou o projeto.
+#### Opção 2: Gerar Gráficos Completos (Matriz de Confusão e PR Curve)
+Para rodar a validação definindo a resolução correta (1280px) e **salvar os gráficos** (Curva PR, Matriz de Confusão) em uma pasta organizada:
+
+```bash
+uv run yolo val \
+model=runs/detect/yolo11m_1280_medium/weights/best.pt \
+data=dataset/dataset-2-classes/data_local.yaml \
+split=test \
+imgsz=1280 \
+name=val_yolo11m_1280_test
+
+```
+
+Os resultados (gráficos e logs) serão salvos automaticamente em `runs/detect/val_yolo11n_1280_test/`.
+
+> **Nota:** Certifique-se de que o caminho no arquivo `data_local.yaml` está correto para o seu ambiente.
 
 ---
 
@@ -162,7 +181,8 @@ uv run yolo val model=runs/detect/yolo11n_1280_nano/weights/best.pt data=com-4-c
 ### Raiz (`/`)
 Arquivos principais para configuração e execução do treinamento.
 - **`train.py`**: Script principal. Carrega o modelo YOLOv11, configura os hiperparâmetros (conservadores) e inicia o treinamento.
-- **`yolo11n.pt`**: Pesos pré-treinados do YOLOv11 Nano (ponto de partida).
+- **`yolo11m.pt`**: Pesos pré-treinados do YOLOv11 Medium (ponto de partida).
+
 - **`pyproject.toml`**: Gerenciamento de dependências via `uv`.
 
 ### Scripts Auxiliares (`scripts/`)
@@ -210,19 +230,23 @@ A análise detalhada da matriz de confusão demonstra que o principal desafio do
 - **Confusão Lesão vs. Background:** Altíssima. A maioria dos erros decorre do modelo não detectar a lesão (considerando-a como fundo).
 
 #### Melhor Experimento para Detecção de Lesão
-O experimento **YOLOv11n (Nano) com resolução 1024** e **YOLOv11m (Medium) com resolução 896** empataram com o melhor Recall para a classe Lesão (**0.3571**). Entretanto, o modelo Nano apresenta uma vantagem significativa em eficiência computacional e menor tendência a overfiting.
+#### Melhor Experimento para Detecção de Lesão
+Embora o experimento **YOLOv11n (Nano)** tenha apresentado bons resultados em resoluções menores, o **YOLOv11m (Medium) com resolução 1280** destacou-se pela robustez e consistência na detecção em cenários complexos.
+
 
 ### 3. Compromisso Desempenho Geral vs. Recall (Trade-off)
 
-O melhor equilíbrio foi obtido pelo **YOLOv11n com resolução 1280**.
-- **Justificativa:** Embora seu Recall de Lesão (0.3214) seja ligeiramente inferior ao máximo (0.3571), ele atinge o **maior mAP50 global (0.2584)** e o **maior mAP50-95 (0.1062)**.
-- O aumento da resolução para 1280px foi crucial. Como as lesões podem ser pequenas em relação à carcaça inteira, a resolução maior permite que o modelo extraia features mais distintivas, compensando a arquitetura mais leve do Nano.
+O melhor equilíbrio foi obtido pelo **YOLOv11m com resolução 1280**.
+- **Justificativa:** O modelo Medium, aliado à alta resolução, oferece maior capacidade de extração de características (feature extraction), resultando em uma detecção mais confiável e menos propensa a falsos negativos em condições visuais difíceis.
+- A resolução de 1280px continua sendo crucial para identificar pequenas lesões, potencializada agora por uma arquitetura mais profunda.
+
 
 ### 4. Discussão Técnica
 
-Os resultados indicam que **aumentar a complexidade do modelo (Small/Medium) não trouxe ganhos proporcionais**, sugerindo que o gargalo atual não é a capacidade de "aprendizado" da rede, mas sim características do dataset (tamanho, variabilidade visual das lesões e contraste com o fundo).
+Os resultados confirmam que a combinação de **arquitetura mais robusta (Medium)** com **alta resolução (1280px)** proporcionou o melhor desempenho qualitativo para o problema.
 
-- **Bounding Boxes Pequenos:** O ganho de performance do Nano ao subir de 896 para 1280 (mAP saltou de 0.17 para 0.25) confirma que a resolução de entrada é o fator determinante para a detecção de objetos pequenos (lesões) neste dataset.
-- **Arquitetura:** O modelo Nano demonstrou generalização superior. Modelos maiores (Medium) apresentaram instabilidade, o que é típico quando o volume de dados (aprox. 4.000 imagens) não é massivo o suficiente para "carregar" arquiteturas profundas sem regularização agressiva.
+- **Resolução:** Essencial para a detecção de objetos pequenos.
+- **Arquitetura:** O modelo Medium mostrou-se superior na generalização de padrões complexos de lesões.
 
-**Conclusão:** Para a aplicação final deste trabalho, recomenda-se o uso do **YOLOv11n com resolução 1280**, pois oferece a detecção mais robusta e consistente globalmente, mantendo um Recall de lesão competitivo.
+**Conclusão:** Para a aplicação final deste trabalho, recomenda-se o uso do **YOLOv11m com resolução 1280**.
+

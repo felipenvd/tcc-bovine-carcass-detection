@@ -79,7 +79,8 @@ O sistema segue uma arquitetura **cliente-servidor** com separação clara de re
 ### Modelo de IA
 | Componente | Arquivo | Descrição |
 |------------|---------|-----------|
-| Arquitetura | `YOLOv11 Nano` | Modelo state-of-the-art para detecção de objetos |
+| Arquitetura | `YOLOv11 Medium` | Modelo state-of-the-art para detecção de objetos |
+
 | Pesos | `backend/app/models/best.pt` | Pesos treinados no dataset customizado |
 | Classes | 2 (Lesão, Perda) | Classes alvo da detecção |
 
