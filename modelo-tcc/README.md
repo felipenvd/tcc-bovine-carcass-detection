@@ -138,7 +138,7 @@ uv run scripts/analyze_dataset.py
 
 ### 🔄 Pipeline de Preparação do Dataset
 
-Se você baixou o **dataset original de 4 classes** do Roboflow, siga estes passos para transformá-lo no dataset de 2 classes utilizado neste projeto:
+Se você baixou o [**dataset original de 4 classes**](https://universe.roboflow.com/zootecnia/deteccao-de-lesoes-e-perdas-nas-carcacas-bovinas) do Roboflow (ZOOTECNICA, 2024), siga estes passos para transformá-lo no dataset de 2 classes utilizado neste projeto:
 
 #### Passo 1: Refatorar para 2 Classes
 Converte as 4 classes originais (Lesão Diant., Lesão Tras., Perda Diant., Perda Tras.) em apenas 2 classes (Lesão, Perda).
@@ -285,4 +285,8 @@ O **YOLOv11m (Medium) em 1280px** mostrou-se promissor na validação cruzada. A
 | **F1-Score** | 0.256 | 0.375 | 0.317 |
 | **AP@0.50** | 0.163 | 0.298 | 0.231 |
 | **AP@0.50:0.95** | 0.065 | 0.128 | 0.096 |
+
+# Referência
+
+ZOOTECNIA. Detecção de lesões e perdas nas carcaças bovinas Dataset. [S. l.]: Roboflow Universe, 2024. Disponível em: https://universe.roboflow.com/zootecnia/deteccao-de-lesoes-e-perdas-nas-carcacas-bovinas. Acesso em: 16 jan. 2026.
 
