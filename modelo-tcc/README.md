@@ -117,14 +117,8 @@ O YOLOv11 traz augmentations agressivos por padrão que podem prejudicar este pr
 
 ### Etapa 3: Treinamento 🚧
 - [x] Configuração do ambiente de treino (`train.py`)
-- [ ] Treinamento do modelo selecionado (YOLOv11 Medium)
-
-- [ ] Análise das métricas iniciais
-
-### Etapa 4: Validação e Ajustes 📅
-- [ ] Matriz de confusão
-- [ ] Testes com imagens de validação
-- [ ] Ajuste de hiperparâmetros (se necessário)
+- [x] Treinamento do modelo selecionado (YOLOv11 Medium)
+- [x] Análise das métricas iniciais
 
 ---
 
@@ -141,6 +135,36 @@ uv sync
 ```bash
 uv run scripts/analyze_dataset.py
 ```
+
+### 🔄 Pipeline de Preparação do Dataset
+
+Se você baixou o **dataset original de 4 classes** do Roboflow, siga estes passos para transformá-lo no dataset de 2 classes utilizado neste projeto:
+
+#### Passo 1: Refatorar para 2 Classes
+Converte as 4 classes originais (Lesão Diant., Lesão Tras., Perda Diant., Perda Tras.) em apenas 2 classes (Lesão, Perda).
+
+```bash
+# Edite os caminhos src_path e dst_path no script antes de rodar
+uv run scripts/refactor_dataset.py
+```
+
+#### Passo 2: Data Augmentation (Lesões)
+Gera 25 variações para cada imagem que contém **apenas lesões**, balanceando o dataset.
+
+```bash
+# Edite o caminho base_path no script para apontar para o dataset de 2 classes
+uv run scripts/augment_dataset.py
+```
+
+#### Passo 3: Verificar Integridade
+Valida se a conversão e augmentação foram aplicadas corretamente.
+
+```bash
+uv run scripts/verify_2_classes.py
+```
+
+> **Resultado:** Após estes passos, você terá o dataset final em `dataset-2-classes/` pronto para treinamento.
+
 
 ### Treinamento
 ```bash
@@ -206,32 +230,33 @@ Ferramentas desenvolvidas para análise, validação e processamento dos dados.
 
 ## 📊 Resultados Experimentais
 
-### 1. Comparação Objetiva entre Modelos
+### 1. Comparação no Conjunto de Validação (Cross-Check)
 
-A análise dos experimentos realizados com YOLOv11 (Nano, Small, Medium) nas resoluções 896, 1024 e 1280 pixels revela um comportamento não-linear entre a complexidade do modelo e o desempenho na detecção de lesões.
+Para confirmar a consistência dos resultados, também avaliamos os modelos no conjunto de validação (`val`), que possui distribuição similar ao teste.
 
-| Modelo | Resolução | mAP50 (Geral) | Recall (Lesão) | Recall (Perda) | Precision | 
+| Modelo | Resolução | mAP50 (Geral) | Recall (Lesão) | Recall (Perda) | Precision |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **YOLOv11n** | 896 | 0.1777 | 0.2995 | 0.2827 | 0.2608 |
-| **YOLOv11n** | 1024 | 0.2356 | **0.3571** | 0.4452 | 0.2879 |
-| **YOLOv11n** | **1280** | **0.2584** | 0.3214 | 0.4912 | 0.2691 |
-| YOLOv11s | 896 | 0.2473 | 0.3393 | 0.5035 | 0.2437 |
-| YOLOv11s | 1024 | 0.2325 | 0.3220 | 0.3922 | 0.2910 |
-| YOLOv11s | 1280 | 0.2410 | 0.2321 | **0.5702** | 0.2313 |
-| YOLOv11m | 896 | 0.2164 | **0.3571** | 0.4170 | 0.2517 |
-| YOLOv11m | 1024 | 0.2471 | 0.2752 | 0.3993 | 0.2959 |
-| YOLOv11m | 1280 | 0.2306 | 0.2445 | 0.3816 | 0.3196 |
+| **YOLOv11n** | 896 | 0.2288 | 0.2833 | 0.2680 | 0.3785 |
+| **YOLOv11n** | 1024 | 0.2334 | 0.2000 | 0.3531 | 0.2894 |
+| **YOLOv11n** | **1280** | 0.2567 | 0.2667 | 0.4072 | 0.3446 |
+| YOLOv11s | 896 | 0.2345 | 0.2333 | 0.2577 | 0.3532 |
+| YOLOv11s | 1024 | 0.2669 | 0.2333 | 0.2474 | 0.4560 |
+| YOLOv11s | 1280 | 0.2716 | 0.2903 | **0.4433** | 0.3888 |
+| YOLOv11m | 896 | 0.2175 | 0.2167 | 0.3170 | 0.2973 |
+| YOLOv11m | 1024 | 0.2551 | **0.3167** | 0.3557 | 0.3279 |
+| YOLOv11m | 1280 | **0.2931** | 0.2833 | 0.3119 | 0.4212 |
+
+> **Nota:** Os resultados de validação mostram que o modelo **Medium (1280px)** teve o melhor desempenho geral (mAP 0.2931), enquanto o **Medium (1024px)** foi o melhor para detectar Lesões (Recall 0.3167).
 
 ### 2. Análise de "Lesão" (Classe Crítica)
 
 #### Matriz de Confusão e Falsos Negativos
 A análise detalhada da matriz de confusão demonstra que o principal desafio do modelo é a **omissão (Falso Negativo)** e não a confusão entre classes.
-- **Confusão Lesão vs. Perda:** Insignificante (virtualmente 0 em todos os melhores testes). O modelo raramente confunde uma lesão com uma perda.
+- **Confusão Lesão vs. Perda:** Insignificante. O modelo raramente confunde uma lesão com uma perda
 - **Confusão Lesão vs. Background:** Altíssima. A maioria dos erros decorre do modelo não detectar a lesão (considerando-a como fundo).
 
 #### Melhor Experimento para Detecção de Lesão
-#### Melhor Experimento para Detecção de Lesão
-Embora o experimento **YOLOv11n (Nano)** tenha apresentado bons resultados em resoluções menores, o **YOLOv11m (Medium) com resolução 1280** destacou-se pela robustez e consistência na detecção em cenários complexos.
+**YOLOv11m (Medium) com resolução 1280** destacou-se pela robustez e consistência na detecção em cenários complexos.
 
 
 ### 3. Compromisso Desempenho Geral vs. Recall (Trade-off)
@@ -249,4 +274,15 @@ Os resultados confirmam que a combinação de **arquitetura mais robusta (Medium
 - **Arquitetura:** O modelo Medium mostrou-se superior na generalização de padrões complexos de lesões.
 
 **Conclusão:** Para a aplicação final deste trabalho, recomenda-se o uso do **YOLOv11m com resolução 1280**.
+
+### 5. Detalhes do Modelo Selecionado (Medium 1280px - Validação Complementar)
+O **YOLOv11m (Medium) em 1280px** mostrou-se promissor na validação cruzada. Abaixo estão os detalhes de seu desempenho no conjunto de **Teste**:
+
+| Métrica | Lesão | Perda | Média |
+| :--- | :---: | :---: | :---: |
+| **Precision** | 0.270 | 0.369 | 0.320 |
+| **Recall** | 0.244 | 0.382 | 0.313 |
+| **F1-Score** | 0.256 | 0.375 | 0.317 |
+| **AP@0.50** | 0.163 | 0.298 | 0.231 |
+| **AP@0.50:0.95** | 0.065 | 0.128 | 0.096 |
 
