@@ -61,11 +61,11 @@ function App() {
     <div className="min-h-screen flex flex-col pt-20 pb-10">
       <Header onAboutClick={togglePage} currentPage={currentPage} />
 
-      <main className="grow container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[calc(100vh-140px)]">
+      <main className={`grow container mx-auto px-4 py-8 flex flex-col items-center ${result ? 'justify-start' : 'justify-center'} min-h-[calc(100vh-140px)]`}>
         {currentPage === 'about' ? (
           <About />
         ) : (
-          <div className="w-full max-w-5xl flex flex-col items-center">
+          <div className={`w-full ${result ? 'max-w-7xl' : 'max-w-5xl'} flex flex-col items-center`}>
 
             {!result && !error && (
               <div className="text-center mb-12 max-w-3xl animate-slide-up">

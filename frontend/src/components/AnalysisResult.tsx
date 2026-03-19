@@ -52,19 +52,19 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({
     const StatusIcon = style.icon;
 
     return (
-        <div className="w-full max-w-5xl animate-slide-up grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="w-full max-w-7xl animate-slide-up grid grid-cols-1 lg:grid-cols-2 gap-10">
 
             {/* Left Column: Visuals */}
             <div className="space-y-6">
                 <div className="glass-panel rounded-3xl overflow-hidden p-2 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <div className="relative rounded-2xl overflow-hidden bg-gray-100 min-h-[300px] flex items-center justify-center group/image">
+                    <div className={`relative rounded-2xl overflow-hidden bg-gray-100 flex items-center justify-center group/image ${annotatedImage ? 'h-auto' : 'min-h-[400px]'}`}>
                         {annotatedImage ? (
                             <>
                                 <Zoom>
                                     <img
                                         src={annotatedImage}
                                         alt="Resultado da Análise"
-                                        className="w-full h-auto object-contain cursor-zoom-in"
+                                        className="w-full h-auto block cursor-zoom-in"
                                     />
                                 </Zoom>
 
@@ -152,44 +152,44 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({
                                 const isLesao = className === 'Lesao';
 
                                 return (
-                                    <div key={className} className="bg-white border border-gray-100 p-2 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
+                                    <div key={className} className="bg-white border border-gray-100 p-4 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
                                         <button
                                             onClick={() => setExpandedClass(isExpanded ? null : className)}
                                             className="w-full flex justify-between items-center p-2 rounded-xl hover:bg-gray-50 transition-colors"
                                         >
-                                            <div className="flex items-center space-x-3">
-                                                <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wide ${isLesao
+                                            <div className="flex items-center space-x-4">
+                                                <span className={`px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wide ${isLesao
                                                     ? 'bg-red-100 text-red-700'
                                                     : 'bg-blue-100 text-blue-700'
                                                     }`}>
                                                     {className}
                                                 </span>
-                                                <span className="text-xs font-semibold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">
+                                                <span className="text-sm font-semibold text-gray-500 bg-gray-100 px-3 py-1 rounded-md">
                                                     {classDetections.length} {classDetections.length === 1 ? 'ocorrência' : 'ocorrências'}
                                                 </span>
                                             </div>
                                             <div className="text-gray-400">
                                                 {isExpanded ? (
-                                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
+                                                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
                                                 ) : (
-                                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                                                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                                                 )}
                                             </div>
                                         </button>
 
                                         {isExpanded && (
-                                            <div className="mt-3 space-y-3 px-2 pb-2">
+                                            <div className="mt-4 space-y-4 px-3 pb-3">
                                                 {classDetections.map((d, index) => (
                                                     <div key={index} className="group">
-                                                        <div className="flex justify-between items-center mb-1.5">
-                                                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                                        <div className="flex justify-between items-center mb-2">
+                                                            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">
                                                                 Confiança
                                                             </span>
-                                                            <span className="text-sm font-mono font-bold text-gray-500 group-hover:text-gray-800 transition-colors">
+                                                            <span className="text-base font-mono font-bold text-gray-600 group-hover:text-gray-900 transition-colors">
                                                                 {(d.confidence * 100).toFixed(1)}%
                                                             </span>
                                                         </div>
-                                                        <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                                                        <div className="h-3 w-full bg-gray-100 rounded-full overflow-hidden">
                                                             <div
                                                                 className={`h-full rounded-full transition-all duration-1000 ease-out ${isLesao
                                                                     ? 'bg-gradient-to-r from-red-400 to-red-500'
