@@ -26,6 +26,7 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({
     annotatedImage,
     onReset
 }) => {
+    const [expandedClass, setExpandedClass] = React.useState<string | null>(null);
     const getSummaryStyle = (sum: string) => {
         if (sum.includes("Crítico")) return {
             bg: "bg-red-50 border-red-100",
@@ -145,35 +146,65 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({
                                 <p>Nenhuma anomalia detectada.</p>
                             </div>
                         ) : (
-                            detections.map((d, index) => (
-                                <div
-                                    key={index}
-                                    className="bg-white border border-gray-100 p-4 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group"
-                                >
-                                    <div className="flex justify-between items-center mb-3">
-                                        <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wide ${d.class === 'Lesao'
-                                            ? 'bg-red-100 text-red-700'
-                                            : 'bg-blue-100 text-blue-700'
-                                            }`}>
-                                            {d.class}
-                                        </span>
-                                        <span className="text-sm font-mono font-bold text-gray-500 group-hover:text-gray-800 transition-colors">
-                                            {(d.confidence * 100).toFixed(1)}%
-                                        </span>
-                                    </div>
+                            Array.from(new Set(detections.map(d => d.class))).map((className) => {
+                                const classDetections = detections.filter(d => d.class === className);
+                                const isExpanded = expandedClass === className;
+                                const isLesao = className === 'Lesao';
 
-                                    {/* Confidence Bar */}
-                                    <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
-                                        <div
-                                            className={`h-full rounded-full transition-all duration-1000 ease-out ${d.class === 'Lesao'
-                                                ? 'bg-gradient-to-r from-red-400 to-red-500'
-                                                : 'bg-gradient-to-r from-blue-400 to-blue-500'
-                                                }`}
-                                            style={{ width: `${d.confidence * 100}%` }}
-                                        ></div>
+                                return (
+                                    <div key={className} className="bg-white border border-gray-100 p-2 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
+                                        <button
+                                            onClick={() => setExpandedClass(isExpanded ? null : className)}
+                                            className="w-full flex justify-between items-center p-2 rounded-xl hover:bg-gray-50 transition-colors"
+                                        >
+                                            <div className="flex items-center space-x-3">
+                                                <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wide ${isLesao
+                                                    ? 'bg-red-100 text-red-700'
+                                                    : 'bg-blue-100 text-blue-700'
+                                                    }`}>
+                                                    {className}
+                                                </span>
+                                                <span className="text-xs font-semibold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">
+                                                    {classDetections.length} {classDetections.length === 1 ? 'ocorrência' : 'ocorrências'}
+                                                </span>
+                                            </div>
+                                            <div className="text-gray-400">
+                                                {isExpanded ? (
+                                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
+                                                ) : (
+                                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                                                )}
+                                            </div>
+                                        </button>
+
+                                        {isExpanded && (
+                                            <div className="mt-3 space-y-3 px-2 pb-2">
+                                                {classDetections.map((d, index) => (
+                                                    <div key={index} className="group">
+                                                        <div className="flex justify-between items-center mb-1.5">
+                                                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                                                Confiança
+                                                            </span>
+                                                            <span className="text-sm font-mono font-bold text-gray-500 group-hover:text-gray-800 transition-colors">
+                                                                {(d.confidence * 100).toFixed(1)}%
+                                                            </span>
+                                                        </div>
+                                                        <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+                                                            <div
+                                                                className={`h-full rounded-full transition-all duration-1000 ease-out ${isLesao
+                                                                    ? 'bg-gradient-to-r from-red-400 to-red-500'
+                                                                    : 'bg-gradient-to-r from-blue-400 to-blue-500'
+                                                                    }`}
+                                                                style={{ width: `${d.confidence * 100}%` }}
+                                                            ></div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
-                                </div>
-                            ))
+                                );
+                            })
                         )}
                     </div>
                 </div>
