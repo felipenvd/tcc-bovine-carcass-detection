@@ -1,4 +1,4 @@
-# 🐂 Frontend - BovineScan
+# 🐂 Frontend - MeatGuard
 
 Interface web moderna para o sistema de detecção de lesões e perdas em carcaças bovinas, construída com **React 19**, **TypeScript** e **Tailwind CSS 4**.
 

@@ -113,7 +113,7 @@ function App() {
       </main>
 
       <footer className="text-center text-gray-400 py-8 text-sm font-medium">
-        <p>© 2026 BovineScan • TCC - Sistemas de Informação</p>
+        <p>© 2026 MeatGuard • TCC - Sistemas de Informação</p>
         <p className="mt-2 text-xs opacity-60">Felipe Vidal & José Pires</p>
       </footer>
     </div>

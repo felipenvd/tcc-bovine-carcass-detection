@@ -27,7 +27,7 @@ export const Header: React.FC<HeaderProps> = ({ onAboutClick, currentPage }) => 
 
                     <div className="hidden sm:block">
                         <h1 className="text-xl font-bold tracking-tight leading-tight">
-                            BovineScan <span className="text-green-300 font-light hidden md:inline">| Análise Bovina</span>
+                            MeatGuard <span className="text-green-300 font-light hidden md:inline">| Análise Bovina</span>
                         </h1>
                         <p className="text-green-200/80 text-xs font-medium tracking-wider uppercase mt-0.5">
                             Inspeção Visual Inteligente

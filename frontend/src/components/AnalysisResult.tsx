@@ -153,7 +153,7 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({
                                     <div className="flex justify-between items-center mb-3">
                                         <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wide ${d.class === 'Lesao'
                                             ? 'bg-red-100 text-red-700'
-                                            : 'bg-amber-100 text-amber-700'
+                                            : 'bg-blue-100 text-blue-700'
                                             }`}>
                                             {d.class}
                                         </span>
@@ -167,7 +167,7 @@ export const AnalysisResult: React.FC<AnalysisResultProps> = ({
                                         <div
                                             className={`h-full rounded-full transition-all duration-1000 ease-out ${d.class === 'Lesao'
                                                 ? 'bg-gradient-to-r from-red-400 to-red-500'
-                                                : 'bg-gradient-to-r from-amber-400 to-amber-500'
+                                                : 'bg-gradient-to-r from-blue-400 to-blue-500'
                                                 }`}
                                             style={{ width: `${d.confidence * 100}%` }}
                                         ></div>
